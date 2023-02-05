@@ -4,6 +4,7 @@
   "private": true,
   "author": "Josh Comeau <me@joshwcomeau.com>",
   "dependencies": {
+    "@react-spring/web": "^9.6.1",
     "new-component": "4.0.0",
     "prettier": "^2.6.2",
     "react": "18.2.0",
