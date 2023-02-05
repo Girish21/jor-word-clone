@@ -6,9 +6,10 @@ import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import Form from "../Form";
 import GuessPreview from "../GuessPreview";
 import Banner from "../Banner";
+import Keyboard from "../Keyboard";
 
 function Game() {
-  const [answer] = React.useState(sample(WORDS));
+  const [answer] = React.useState(() => sample(WORDS));
   const [guesses, setGuesses] = React.useState([]);
 
   React.useEffect(() => {
@@ -30,6 +31,7 @@ function Game() {
         showBanner={!running}
         status={correctGuess ? "happy" : "sad"}
       />
+      <Keyboard guesses={guesses} />
     </>
   );
 }

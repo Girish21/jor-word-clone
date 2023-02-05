@@ -38,7 +38,7 @@ function CellsImpl({ status }) {
     rotateX: 0,
     config: {
       tension: 400,
-      friction: 30,
+      friction: 25,
     },
   }));
 
