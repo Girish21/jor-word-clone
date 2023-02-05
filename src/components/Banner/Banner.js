@@ -1,6 +1,6 @@
 import React from "react";
 
-function Banner({ showBanner, status, guesses, answer }) {
+function Banner({ showBanner, status, guesses, answer, resetGame }) {
   if (!showBanner) {
     return null;
   }
@@ -17,6 +17,9 @@ function Banner({ showBanner, status, guesses, answer }) {
           Sorry, the correct answer is <strong>{answer}</strong>.
         </p>
       )}
+      <button data-reset onClick={resetGame}>
+        Play Again
+      </button>
     </div>
   );
 }

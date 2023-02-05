@@ -32,22 +32,34 @@ function CellImpl({ instance, style, ...rest }) {
 }
 const Cell = React.memo(CellImpl);
 
-function CellsImpl({ status }) {
+function CellsImpl({ id, resetCallback, status, close }) {
   const revealed = React.useRef(false);
-  const [trails, api] = useTrail(status.length, () => ({
-    rotateX: 0,
-    config: {
-      tension: 400,
-      friction: 25,
-    },
-  }));
+  const [trails, api] = useTrail(
+    status.length,
+    () => ({
+      rotateX: 0,
+      config: {
+        tension: 400,
+        friction: 25,
+      },
+      onRest: ({ value }) => {
+        if (value.rotateX === 0) {
+          resetCallback(id, true);
+        }
+      },
+    }),
+    [id]
+  );
 
   React.useEffect(() => {
     if (!revealed.current && typeof status?.[0] !== "number") {
       api.start({ rotateX: 180 });
       revealed.current = true;
+    } else if (typeof status?.[0] === "number" || close) {
+      api.start({ rotateX: 0 });
+      revealed.current = false;
     }
-  }, [api, status]);
+  }, [api, close, status]);
 
   return trails.map((style, i) => (
     <Cell key={i} style={style} instance={status?.[i]} />
@@ -55,12 +67,17 @@ function CellsImpl({ status }) {
 }
 const Cells = React.memo(CellsImpl);
 
-function GuessPreview({ guesses }) {
+function GuessPreview({ guesses, resetCallback }) {
   return (
     <div className="guess-results">
       {GUESSES.map((i) => (
         <Row key={i}>
-          <Cells status={guesses[i]?.status ?? CELLS} />
+          <Cells
+            resetCallback={resetCallback}
+            id={guesses[i]?.id}
+            status={guesses[i]?.status ?? CELLS}
+            close={!!guesses[i]?.close}
+          />
         </Row>
       ))}
     </div>
